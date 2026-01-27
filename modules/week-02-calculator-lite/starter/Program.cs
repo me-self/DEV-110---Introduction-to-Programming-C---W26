@@ -28,6 +28,7 @@ public class Program
         double difference = firstNum - secondNum;
         double product = firstNum * secondNum;
         double average = (firstNum + secondNum) / 2;
+
         // Initialize these all to zero by default in case we can't calculate them.
         double quotient = 0;
         double remainder = 0;
@@ -43,6 +44,7 @@ public class Program
             remainder = firstNum % secondNum;
             totalCalculations += 2;
         }
+
         if (firstNum != 0)
         {
             percentage_difference = (firstNum - secondNum) / firstNum * 100;
@@ -117,7 +119,7 @@ public class Program
     }
 
     // Helper function since we do the same thing twice.
-    static double GetInputNumber(string prompt, bool precise, int attempts = 0)
+    private static double GetInputNumber(string prompt, bool precise, int attempts = 0)
     {
         // If we failed to parse we display a hint.
         if (attempts > 0)
@@ -132,14 +134,17 @@ public class Program
                 Console.WriteLine("Invalid input. Input must be an integer!");
             }
         }
+
         Console.Write(prompt);
         if (precise)
         {
             double number;
             bool parseSuccess = double.TryParse(Console.ReadLine(), out number);
+
             // If parsing succeeds, we return number, otherwise we try again.
             return parseSuccess ? number : GetInputNumber(prompt, precise, attempts + 1);
         }
+
         // > If no decimals: use int.Parse() then cast to double
         //
         // Only accept integers if the user didn't enable the precise option.
@@ -148,6 +153,7 @@ public class Program
         {
             int number;
             bool parseSuccess = int.TryParse(Console.ReadLine(), out number);
+
             // No need to check for the second parse, this int -> double shouldn't fail.
             return parseSuccess ? (double)number : GetInputNumber(prompt, precise, attempts + 1);
         }
