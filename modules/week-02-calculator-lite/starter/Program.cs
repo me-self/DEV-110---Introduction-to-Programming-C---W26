@@ -1,5 +1,3 @@
-using System.IO.Compression;
-
 namespace CalculatorLite;
 
 public class Program
