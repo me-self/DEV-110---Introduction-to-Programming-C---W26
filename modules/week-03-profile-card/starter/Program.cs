@@ -174,7 +174,7 @@ public class Program
         WriteCardLine($"Birth year: {birthYear}", contentWidth);
         WriteCardLine($"Years to graduation: {yearsToGraduation}", contentWidth);
         WriteCardLine($"Height: {feetAndInchesTall.Item1} ft. {feetAndInchesTall.Item2:F2} in.", contentWidth);
-        WriteCardLine($"Honor student: {(isHonorStudent ? '✓' : '✗')}", contentWidth);
+        WriteCardLine($"Honor student: {(isHonorStudent ? "Yes ✓" : "No ✗")}", contentWidth);
         WriteCardLine($"Months old: {monthsOld}", contentWidth);
 
         Console.Write("╚═");
