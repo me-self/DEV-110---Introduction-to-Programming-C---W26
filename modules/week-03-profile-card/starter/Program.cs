@@ -122,7 +122,7 @@ public class Program
         // Calculate additional info.
         int birthYear = CURRENT_YEAR - age;
         int yearsToGraduation = graduationYear - CURRENT_YEAR;
-        (int, double) feetAndInchesTall = ((int)heightInches / 12, heightInches % 12);
+        (int, double) feetAndInchesTall = ((int)(heightInches / 12), heightInches % 12);
         bool isHonorStudent = gpa >= 3.5;
         int monthsOld = age * 12;
 
@@ -158,20 +158,23 @@ public class Program
         WriteCardLine($"Home town: {homeTown}", contentWidth);
         WriteCardLine($"Favorite color: {favoriteColor}", contentWidth);
         WriteCardLine($"Dream job: {dreamJob}", contentWidth);
+        WriteCardLine($"Age: {age}", contentWidth);
+        WriteCardLine($"Height: {heightInches} in.", contentWidth);
+        WriteCardLine($"Favorite number: {favoriteNumber}", contentWidth);
         WriteCardSeperator(contentWidth);
 
         WriteCardLine("ACADEMIC DETAILS", contentWidth);
         WriteCardLine($"Major: {major}", contentWidth);
         WriteCardLine($"GPA: {gpa:F2}", contentWidth);
         WriteCardLine($"Graduation year: {graduationYear}", contentWidth);
-        WriteCardLine($"Full time: {isFullTimeStudent}", contentWidth);
+        WriteCardLine(isFullTimeStudent ? "Full time student" : "Part time student", contentWidth);
         WriteCardSeperator(contentWidth);
 
         WriteCardLine("CALCULATED STATISTICS", contentWidth);
         WriteCardLine($"Birth year: {birthYear}", contentWidth);
         WriteCardLine($"Years to graduation: {yearsToGraduation}", contentWidth);
         WriteCardLine($"Height: {feetAndInchesTall.Item1} ft. {feetAndInchesTall.Item2:F2} in.", contentWidth);
-        WriteCardLine($"Honor student: {isHonorStudent}", contentWidth);
+        WriteCardLine($"Honor student: {(isHonorStudent ? '✓' : '✗')}", contentWidth);
         WriteCardLine($"Months old: {monthsOld}", contentWidth);
 
         Console.Write("╚═");
