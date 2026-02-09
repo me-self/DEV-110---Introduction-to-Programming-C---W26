@@ -24,11 +24,16 @@ public class Program
             int guess = 0;
             int guessCount = 0;
 
+            // Keep prompting the user for guesses until their guess is correct.
             while (guess != secret)
             {
                 guess = ReadIntInRange($"Guess a number (1-{maxValue}): ", 1, maxValue);
 
+                // Once we've got a new guess submitted we can increment our
+                // guess counter now so it's up to date if the player wins.
                 guessCount++;
+
+                // Give feedback on the guess.
                 if (guess < secret)
                 {
                     Console.WriteLine("Too low.");
@@ -47,19 +52,21 @@ public class Program
         Console.WriteLine("Thanks for playing!");
     }
 
+    // Repeatedly prompts the user with `prompt` from an int from `min` to `max`
+    // until a valid, in range int is provided.
     private static int ReadIntInRange(string prompt, int min, int max)
     {
         int value;
         bool isValid;
 
+        // Loop if parsing failed or the value is out of range.
         do
         {
             Console.Write(prompt);
             isValid = int.TryParse(Console.ReadLine(), out value);
         }
-
-        // Loop if parsing failed or the value is out of range.
         while (!isValid || value < min || value > max);
+
         return value;
     }
 }
