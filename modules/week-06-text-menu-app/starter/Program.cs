@@ -10,13 +10,6 @@
 - Runs a text-heavy menu app that demonstrates string formatting and output patterns.
 - */
 
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Globalization;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-using System.Text;
-
 namespace TextMenuApp;
 
 public class Program
