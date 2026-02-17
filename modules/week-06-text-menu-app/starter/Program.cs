@@ -3,7 +3,7 @@
 - Instructor: Zak Brinlee
 - Term: Winter 2026
 -
-- Programmer: YourName
+- Programmer: Samuel Bellemare
 - Assignment: Week 6: Text Menu App
 -
 - What does this program do?:
