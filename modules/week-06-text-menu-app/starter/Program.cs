@@ -35,14 +35,6 @@ public class Program
 
         while (choice != 6)
         {
-            // TODO 3: Print the menu box
-            // Required menu option texts (tests check for these):
-            // - 1) Greeting Card
-            // - 2) Name Tag Formatter
-            // - 3) Phrase Analyzer
-            // - 4) Fancy Receipt Line
-            // - 5) Menu Banner Builder
-            // - 6) Exit
             Console.WriteLine($"- 1) Greeting Card");
             Console.WriteLine($"- 2) Name Tag Formatter");
             Console.WriteLine($"- 3) Phrase Analyzer");
