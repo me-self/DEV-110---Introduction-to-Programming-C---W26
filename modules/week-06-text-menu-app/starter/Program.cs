@@ -138,7 +138,7 @@ public class Program
                     Console.WriteLine("Centered: ");
                     Console.WriteLine($"|={horizontalBorder}=|");
                     Console.WriteLine($"| {titleCenter} |");
-                    Console.WriteLine($"| {subtitleLeft} |");
+                    Console.WriteLine($"| {subtitleCenter} |");
                     Console.WriteLine($"|={horizontalBorder}=|");
                     Console.WriteLine();
 
@@ -146,7 +146,7 @@ public class Program
                     Console.WriteLine("Right: ");
                     Console.WriteLine($"|={horizontalBorder}=|");
                     Console.WriteLine($"| {titleRight} |");
-                    Console.WriteLine($"| {subtitleLeft} |");
+                    Console.WriteLine($"| {subtitleRight} |");
                     Console.WriteLine($"|={horizontalBorder}=|");
                     Console.WriteLine();
                     break;
