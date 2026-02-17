@@ -47,7 +47,7 @@ public class Program
                     string name = Console.ReadLine().Trim();
                     Console.Write("Enter a short message: ");
                     string shortMessage = Console.ReadLine();
-                    string greeting = $"HI {name.ToUpper()}!";
+                    string greeting = $"HELLO {name.ToUpper()}!";
                     string nameField = $"Name: {name}";
                     string messageField = $"Message: {shortMessage}";
 
@@ -163,10 +163,10 @@ public class Program
                     bool containsSpace = firstSpaceIndex != -1;
 
                     // Print the results of our operations.
-                    Console.WriteLine("Said goodbye? {0}", isGoodbye ? "Yes" : "No");
-                    Console.WriteLine($"First three characters: {firstThree}");
-                    Console.WriteLine("Ended with an exclaimation mark? {0}", endsWithExclaim ? "Yes" : "No");
-                    Console.WriteLine(containsSpace ? $"First space at index {firstSpaceIndex}" : "No spaces.");
+                    Console.WriteLine("Is goodbye? {0}", isGoodbye ? "Yes" : "No");
+                    Console.WriteLine($"First {upToThree} characters: {firstThree}");
+                    Console.WriteLine("Ends with `!`? {0}", endsWithExclaim ? "Yes" : "No");
+                    Console.WriteLine(containsSpace ? $"First space at index {firstSpaceIndex}" : "Space not found.");
                     Console.WriteLine("Goodbye!");
 
                     continue;
