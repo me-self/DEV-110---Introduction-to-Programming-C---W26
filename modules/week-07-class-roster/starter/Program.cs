@@ -43,6 +43,7 @@ public class Program
                     if (count == ROSTER_CAPACITY)
                     {
                         Console.WriteLine("Roster is full. Cannot add more students.");
+
                         // Could use an `else`, but `break`ing here instead
                         // reduces nesting, making things more readable.
                         break;
@@ -69,6 +70,7 @@ public class Program
                         rosterNames[count + i] = newNames[i];
                         rosterCredits[count + i] = newCredits[i];
                     }
+
                     // Update the count now that we've added the entries to the roster.
                     count += studentsToAddCount;
 
@@ -80,6 +82,7 @@ public class Program
                     if (count == 0)
                     {
                         Console.WriteLine("Roster is empty.");
+
                         // Could use an `else`, but `break`ing here instead
                         // reduces nesting, making things more readable.
                         break;
@@ -99,10 +102,12 @@ public class Program
                     if (count == 0)
                     {
                         Console.WriteLine("Roster is empty.");
+
                         // Could use an `else`, but `break`ing here instead
                         // reduces nesting, making things more readable.
                         break;
                     }
+
                     Console.WriteLine("Sort by:");
                     Console.WriteLine("1) Name");
                     Console.WriteLine("2) Credits");
@@ -132,6 +137,7 @@ public class Program
                 case 4:
                     // ===== OPTION 4: Exit =====
                     Console.WriteLine("Goodbye.");
+
                     // We return so that we don't get a blank line.
                     return;
             }
@@ -156,7 +162,6 @@ public class Program
 
         return value;
     }
-
 
     private static string[] BuildRosterLines(string[] names, int[] credits, int count)
     {
