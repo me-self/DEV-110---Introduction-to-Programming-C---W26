@@ -3,7 +3,7 @@
 - Instructor: Zak Brinlee
 - Term: Winter 2026
 -
-- Programmer: YourName
+- Programmer: Samuel Bellemare
 - Assignment: Week 8: Mad Libs (Structure + Debugging)
 -
 - What does this program do?:
@@ -27,14 +27,15 @@ public class StoryTemplate
 
     public string TemplateText { get; }
 
-    // TODO 1: Implement GenerateStory method
-    // This method should:
-    // - Validate that words.Length equals Prompts.Length
-    // - Call FormatStory to build the final story string
-    // - Return the formatted story
     public string GenerateStory(string[] words)
     {
-        throw new NotImplementedException();
+        // Throw an exception if the arguments are invalid (not of matching length).
+        if (words.Length != Prompts.Length)
+        {
+            throw new ArgumentException("Mismatched number of words to prompts!");
+        }
+        // We know `words` is the correct length or the exception would've been thrown.
+        return FormatStory(words);
     }
 
     // TODO 2: Implement FormatStory method (private helper)
