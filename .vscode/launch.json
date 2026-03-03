@@ -12,5 +12,16 @@
       "console": "integratedTerminal",
       "stopAtEntry": false
     }
+    {
+      "name": "Module - Week 08 - Mad Libs (starter)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build: Lab Week 08 (starter)",
+      "program": "${workspaceFolder}/modules/week-08-mad-libs/starter/bin/Debug/net9.0/MadLibs.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/modules/week-08-mad-libs/starter",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    }
   ]
 }
