@@ -42,8 +42,8 @@ public class StoryTemplate
     /// The number of words should match the number of prompts.
     /// </summary>
     /// <param name="words">The words to insert into the story.</param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
+    /// <returns>The story as string generated from the template and given words.</returns>
+    /// <exception cref="ArgumentException">Mismatched number of words to prompts!.</exception>
     public string GenerateStory(string[] words)
     {
         // Throw an exception if the arguments are invalid (not of matching length).
