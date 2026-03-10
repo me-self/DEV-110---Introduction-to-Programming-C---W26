@@ -3,7 +3,7 @@
 - Instructor: Zak Brinlee
 - Term: Winter 2026
 -
-- Programmer: YourName
+- Programmer: Samuel Bellemare
 - Assignment: Week 9: Score Stats (Methods + LINQ)
 -
 - What does this program do?:
