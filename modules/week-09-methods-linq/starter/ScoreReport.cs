@@ -88,6 +88,7 @@ internal class ScoreReport
     /// <param name="topCount">The number of top scores to display.</param>
     private void PrintTopScores(int topCount)
     {
+        // Sort by decending first so that the first elements are the top scores.
         IEnumerable<int> topScores = _scores.OrderByDescending(score => score).Take(topCount);
         string formattedScores = string.Join(", ", topScores);
         Console.WriteLine($"Top {topCount}: {formattedScores}");
@@ -110,7 +111,9 @@ internal class ScoreReport
     /// </summary>
     private void PrintFailingScores()
     {
-        IOrderedEnumerable<int> failingScores = _scores.Where(score => score < Threshold).OrderByDescending(score => score);
+        IOrderedEnumerable<int> failingScores = _scores
+            .Where(score => score < Threshold)
+            .OrderByDescending(score => score);
         string formattedScores = string.Join(", ", failingScores);
         Console.WriteLine($"Failing scores (desc): {formattedScores}");
     }
