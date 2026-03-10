@@ -43,9 +43,10 @@ jobs:
             01) ASSIGNMENT="week-01-hello-github" ;;
             02) ASSIGNMENT="week-02-calculator-lite" ;;
             03) ASSIGNMENT="week-03-profile-card" ;;
+            05) ASSIGNMENT="week-05-guess-the-number" ;;
             *)
               echo "::error::Week $WEEK not yet configured in workflow"
-              echo "::error::Available weeks: 01, 02, 03"
+              echo "::error::Available weeks: 01, 02, 03, 05"
               exit 1
               ;;
           esac

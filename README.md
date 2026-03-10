@@ -9,16 +9,16 @@ This course is organized into 12 weekly modules, each building on the previous w
 | Week | Topic                              | Assignment                                              |
 | ---- | ---------------------------------- | ------------------------------------------------------- |
 | 1    | Dev Workflow + Git/GitHub          | [Hello, GitHub](modules/week-01-hello-github/)          |
-| 2    | C# Basics: Types, Expressions, I/O | [Calculator Lite](modules/week-02-calculator-lite/)     |
-| 3    | Variables + Data Modeling          | [Profile Card Generator](modules/week-03-profile-card/) |
-| 4    | Decisions: If/Else Logic           | Grade/Budget Tracker _(Coming Soon)_                    |
-| 5    | Loops: Repetition + Validation     | Choose-Your-Path _(Coming Soon)_                        |
-| 6    | Strings + Console Output Patterns  | Guess the Number _(Coming Soon)_                        |
-| 7    | Arrays: Collections + Indexing     | Text Menu App _(Coming Soon)_                           |
-| 8    | Program Structure + Debugging      | Class Roster Stats _(Coming Soon)_                      |
+| 2    | C# Basics: Types, Expressions, I/O | No graded assignment (practice week)                    |
+| 3    | Variables + Data Modeling          | [Calculator Lite](modules/week-02-calculator-lite/)     |
+| 4    | Decisions: If/Else Logic           | [Profile Card Generator](modules/week-03-profile-card/) |
+| 5    | Loops: Repetition + Validation     | Guess the Number _(Coming Soon)_                        |
+| 6    | Strings + Console Output Patterns  | Text Menu App _(Coming Soon)_                           |
+| 7    | Arrays: Collections + Indexing     | Class Roster Stats _(Coming Soon)_                      |
+| 8    | Program Structure + Debugging      | MadLibs Generator _(Coming Soon)_                       |
 | 9    | Methods: Decomposition + Reuse     | Methods Refactor _(Coming Soon)_                        |
 | 10   | Windows Forms: Events + UI         | First GUI App _(Coming Soon)_                           |
-| 11   | Methods + Validation               | GUI Upgrade _(Coming Soon)_                             |
+| 11   | Open Lab / Final Project Work      | Work on Final Project                                   |
 | 12   | Final Project                      | TBD                                                     |
 
 ---
@@ -28,7 +28,6 @@ This course is organized into 12 weekly modules, each building on the previous w
 ### First-Time Setup
 
 1. **Install Required Software** (see [Setup Guide](docs/SETUP.md))
-
     - .NET 9.0 SDK
     - Visual Studio Code
     - Git
@@ -88,8 +87,8 @@ This course is organized into 12 weekly modules, each building on the previous w
 
 Each assignment includes automated tests that run:
 
--   **Locally:** When you run `./test <week>`
--   **On GitHub:** Automatically when you push code
+- **Locally:** When you run `./test <week>`
+- **On GitHub:** Automatically when you push code
 
 ### Quick Test Commands
 
@@ -117,10 +116,10 @@ dotnet test ..\tests
 
 **Features:**
 
--   ✅/❌ Clear visual indicators
--   💡 Helpful tips for fixing failures
--   🎨 Color-coded output
--   Filters out confusing build messages
+- ✅/❌ Clear visual indicators
+- 💡 Helpful tips for fixing failures
+- 🎨 Color-coded output
+- Filters out confusing build messages
 
 See [Testing Quick Reference](docs/TESTING_QUICK_REFERENCE.md) for more details.
 
@@ -142,8 +141,8 @@ dotnet format --verify-no-changes
 
 ### In VS Code
 
--   **Format on Save** is enabled automatically
--   **Manual Format:** `Shift+Option+F` (Mac) or `Shift+Alt+F` (Windows)
+- **Format on Save** is enabled automatically
+- **Manual Format:** `Shift+Option+F` (Mac) or `Shift+Alt+F` (Windows)
 
 See [Style Guide](docs/STYLE_GUIDE.md) for detailed style rules.
 
@@ -180,10 +179,10 @@ DEV-110---Introduction-to-Programming-C---W26/
 
 ### Resources
 
--   **[Setup Guide](docs/SETUP.md)** - Installation and configuration
--   **[Style Guide](docs/STYLE_GUIDE.md)** - Code formatting standards
--   **[Testing Guide](docs/TESTING_GUIDE.md)** - Understanding and running tests
--   **[FAQ](docs/FAQ.md)** - Common questions and solutions
+- **[Setup Guide](docs/SETUP.md)** - Installation and configuration
+- **[Style Guide](docs/STYLE_GUIDE.md)** - Code formatting standards
+- **[Testing Guide](docs/TESTING_GUIDE.md)** - Understanding and running tests
+- **[FAQ](docs/FAQ.md)** - Common questions and solutions
 
 ### Support Channels
 
@@ -196,13 +195,13 @@ DEV-110---Introduction-to-Programming-C---W26/
 
 ## ✅ Quick Tips
 
--   💾 **Commit often** - Small, frequent commits are better than large ones
--   🧪 **Test early** - Run tests as you code, not just at the end
--   📝 **Read errors** - Error messages tell you exactly what's wrong
--   🎨 **Format code** - Run `dotnet format` before committing
--   🔍 **Use the debugger** - Step through code to understand what's happening
--   📖 **Read docs** - Assignment READMEs have everything you need
--   🤝 **Ask for help** - Don't struggle alone - use discussion boards!
+- 💾 **Commit often** - Small, frequent commits are better than large ones
+- 🧪 **Test early** - Run tests as you code, not just at the end
+- 📝 **Read errors** - Error messages tell you exactly what's wrong
+- 🎨 **Format code** - Run `dotnet format` before committing
+- 🔍 **Use the debugger** - Step through code to understand what's happening
+- 📖 **Read docs** - Assignment READMEs have everything you need
+- 🤝 **Ask for help** - Don't struggle alone - use discussion boards!
 
 ---
 
@@ -216,9 +215,9 @@ Assignments are graded automatically based on:
 
 View your results in:
 
--   GitHub Actions (click the ✅ or ❌ on your commit)
--   Your Pull Request page
--   The "Actions" tab in your repository
+- GitHub Actions (click the ✅ or ❌ on your commit)
+- Your Pull Request page
+- The "Actions" tab in your repository
 
 ---
 
@@ -226,22 +225,22 @@ View your results in:
 
 By the end of this course, you will be able to:
 
--   ✅ Write, compile, and debug C# programs
--   ✅ Use variables, data types, and operators
--   ✅ Implement decision-making and loops
--   ✅ Work with arrays and collections
--   ✅ Create and use methods
--   ✅ Build simple GUI applications
--   ✅ Use Git for version control
--   ✅ Read and write clean, maintainable code
+- ✅ Write, compile, and debug C# programs
+- ✅ Use variables, data types, and operators
+- ✅ Implement decision-making and loops
+- ✅ Work with arrays and collections
+- ✅ Create and use methods
+- ✅ Build simple GUI applications
+- ✅ Use Git for version control
+- ✅ Read and write clean, maintainable code
 
 ---
 
 ## 📜 License & Academic Integrity
 
--   **Code:** Your code is your own. Follow the academic integrity policy in the syllabus.
--   **Repository Structure:** Course materials are provided for educational purposes.
--   **Collaboration:** Discuss ideas, but write your own code.
+- **Code:** Your code is your own. Follow the academic integrity policy in the syllabus.
+- **Repository Structure:** Course materials are provided for educational purposes.
+- **Collaboration:** Discuss ideas, but write your own code.
 
 ---
 
