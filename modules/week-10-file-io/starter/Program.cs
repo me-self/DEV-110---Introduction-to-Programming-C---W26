@@ -3,7 +3,7 @@
  * Instructor: Zak Brinlee
  * Term: Winter 2026
  *
- * Programmer: YourName
+ * Programmer: Samuel Bellemare
  * Assignment: Week 10: Habit Tracker (File I/O)
  *
  * What does this program do?:
@@ -82,110 +82,188 @@ public class Program
         Console.WriteLine("Goodbye!");
     }
 
-    // TODO 1: Implement LoadHabits
-    // Reads a CSV file where each line is: Name,Status,Frequency  (e.g. "Exercise,done,daily")
-    //
-    // Requirements:
-    // - Create an empty List<Habit>
-    // - Inside a try block: call File.ReadAllLines(path)
-    // - Loop through the lines; skip blank ones (use string.IsNullOrWhiteSpace)
-    // - For each line: split on ',' → parts[0] = name, parts[1] = status, parts[2] = frequency
-    // - Trim whitespace from all parts
-    // - isCompleted is true when status equals "done" (case-insensitive)
-    //   Hint: parts[1].Trim().Equals("done", StringComparison.OrdinalIgnoreCase)
-    // - Create new Habit(name, isCompleted, frequency) and add to the list
-    // - Catch FileNotFoundException and print:
-    //     Error: File not found — {path}
-    //   (use — which is an em dash, not a hyphen)
-    // - Return the list
+    /// <summary>
+    /// Collects a list of habits from the file at the given path.
+    /// </summary>
+    /// <param name="path">The path of the file to read from.</param>
+    /// <returns>The list of collected habits.</returns>
     private static List<Habit> LoadHabits(string path)
     {
-        throw new NotImplementedException();
+        List<Habit> habits = new List<Habit>();
+
+        try
+        {
+            string[] lines = File.ReadAllLines(path);
+            foreach (string line in lines)
+            {
+                // If it's empty or null we just skip this line.
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                string[] parts = line.Split(',');
+                // Trim all parts.
+                parts.Select(part => part.Trim());
+
+                // If the line isn't in the expected format, we skip it.
+                if (parts.Length != 3)
+                {
+                    Console.WriteLine($"Skipping invalid entry: \"{line}\"");
+                    continue;
+                }
+
+                string name = parts[0];
+                string status = parts[1];
+                string frequency = parts[2];
+
+                bool isCompleted = status.Equals("done", StringComparison.OrdinalIgnoreCase);
+
+                Habit habit = new Habit(name, isCompleted, frequency);
+                habits.Add(habit);
+            }
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine($"Error: File not found — {path}");
+        }
+
+        return habits;
     }
 
-    // TODO 2: Implement PrintHabits
-    // Prints all habits with a status marker.
-    //
-    // Requirements:
-    // - Print the header: --- Your Habits ---
-    // - Loop through the habits list; call DisplayInfo() on each
-    //
-    // Recall: DisplayInfo() is already implemented on the Habit class.
+    /// <summary>
+    /// Prints all habits with a status marker.
+    /// </summary>
+    /// <param name="habits">The list of habits to print out.</param>
     private static void PrintHabits(List<Habit> habits)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("--- Your Habits ---");
+        foreach (Habit habit in habits)
+        {
+            habit.DisplayInfo();
+        }
     }
 
-    // TODO 3: Implement PrintSummary
-    // Prints LINQ-based summary stats grouped by frequency.
-    //
-    // Requirements:
-    // - Print: --- Summary ---
-    // - Use LINQ with a predicate to count daily vs weekly habits:
-    //     habits.Count(h => h.Frequency == "daily")
-    //     habits.Count(h => h.Frequency == "daily" && h.IsCompleted)
-    // - Guard against divide-by-zero if a group has 0 habits
-    // - Format each rate to 1 decimal: rate.ToString("F1", CultureInfo.InvariantCulture)
-    //
-    // Example output:
-    //   --- Summary ---
-    //   Daily:    3/4 completed (75.0%)
-    //   Weekly:   1/1 completed (100.0%)
+    /// <summary>
+    /// Displays a summary of habit completion.
+    /// </summary>
+    /// <param name="habits">The habits from which to build the summary.</param>
     private static void PrintSummary(List<Habit> habits)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("--- Summary ---");
+
+        // Get daily counts.
+        int dailyTotal = habits.Count(h => h.Frequency == "daily");
+        int dailyCompleted = habits.Count(h => h.Frequency == "daily" && h.IsCompleted);
+
+        // Default to a full completion rate in the case of 0 tasks.
+        float dailyRate = 1;
+        if (dailyTotal != 0)
+        {
+            dailyRate = (float)dailyCompleted / dailyTotal; // Cast to float avoid truncation.
+        }
+        string dailyRateFormatted = (dailyRate * 100).ToString("F1", CultureInfo.InvariantCulture);
+
+        // Get weekly counts.
+        int weeklyTotal = habits.Count(h => h.Frequency == "weekly");
+        int weeklyCompleted = habits.Count(h => h.Frequency == "weekly" && h.IsCompleted);
+
+        // Default to a full completion rate in the case of 0 tasks.
+        float weeklyRate = 1;
+        if (weeklyTotal != 0)
+        {
+            weeklyRate = (float)weeklyCompleted / weeklyTotal; // Cast to float avoid truncation.
+        }
+        string weeklyRateFormatted = (weeklyRate * 100).ToString("F1", CultureInfo.InvariantCulture);
+
+        const int LabelRegion = 10;
+        string summaryFormat = $"{{0,-{LabelRegion}}} {{1,0}}/{{2,0}} completed ({{3,0}}%)";
+        Console.WriteLine(summaryFormat, "Daily:", dailyCompleted, dailyTotal, dailyRateFormatted);
+        Console.WriteLine(summaryFormat, "Weekly:", weeklyCompleted, weeklyTotal, weeklyRateFormatted);
     }
 
-    // TODO 4: Implement AddHabit
-    // Prompts the user for a name and frequency, then adds a new habit to the list.
-    //
-    // Requirements:
-    // - Print: --- Add Habit ---
-    // - Prompt: Habit name:
-    // - Read the name; trim whitespace
-    // - Prompt: Frequency ((D)aily or (W)eekly):
-    // - Read input; trim and convert to uppercase
-    // - Set frequency to "daily" if input is "D", otherwise "weekly"
-    // - Create new Habit(name, false, frequency) and add to habits
-    //   (new habits start as not completed)
-    // - Print: Added: {name} ({frequency})
+    /// <summary>
+    /// Prompts the user for a name and frequency, then adds a new habit to the list.
+    /// </summary>
+    /// <param name="habits">The list in which to add the new habit.</param>
     private static void AddHabit(List<Habit> habits)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("--- Add Habit ---");
+
+        // Prompt for a name until we get something more than whitespace.
+        string name;
+        do
+        {
+            Console.Write("Habit name: ");
+            name = (Console.ReadLine() ?? "").Trim();
+        }
+        while (name == "");
+
+        // Prompt until we get "D" or "W".
+        string frequencyInput;
+        do
+        {
+            Console.Write("Frequency ((D)aily or (W)eekly): ");
+            frequencyInput = (Console.ReadLine() ?? "").Trim().ToUpper();
+
+        }
+        while (frequencyInput != "D" && frequencyInput != "W");
+
+        // If it's not "D", it must be "W"
+        string frequency = (frequencyInput == "D") ? "daily" : "weekly";
+
+        // Create and add the habit.
+        Habit habit = new Habit(name, false, frequency);
+        habits.Add(habit);
+
+        Console.WriteLine($"Added: {name} ({frequency})");
     }
 
-    // TODO 5: Implement UpdateHabit
-    // Shows a numbered list of habits, lets the user pick one,
-    // optionally rename it, and toggles its completion status.
-    //
-    // Requirements:
-    // - If the list is empty: Print: No habits to update.  then return
-    // - Print: --- Update Habit ---
-    // - Print a 1-based numbered list: "1. Exercise"  "2. Meditate"  etc.
-    // - Prompt: Enter habit number:
-    // - Read using ReadIntInRange(1, habits.Count); subtract 1 for the index
-    // - Prompt: New name (press Enter to keep "{habit.Name}"):
-    // - If the user types something (non-blank), set habit.Name = newName
-    // - Toggle IsCompleted: if true → false; if false → true
-    // - Print: Updated: {habit.Name} — now {completed or pending}
-    //   Hint: (habit.IsCompleted ? "completed" : "pending")
+    /// <summary>
+    /// Prompts the user to select a habit. The completion status is toggled and the name is updated if provided.
+    /// </summary>
+    /// <param name="habits">The list of habits to offer to update.</param>
     private static void UpdateHabit(List<Habit> habits)
     {
-        throw new NotImplementedException();
+        if (habits.Count() == 0)
+        {
+            Console.WriteLine("No habits to update.");
+            return;
+        }
+
+        Console.WriteLine("--- Update Habit ---");
+
+        // Print out the list of habits, numbered.
+        for (int i = 0; i < habits.Count(); i++)
+        {
+            Console.WriteLine($"{i + 1}. {habits[i].Name}");
+        }
+        Console.Write("Enter habit number: ");
+        int selection = ReadIntInRange(1, habits.Count) - 1;
+
+        // Overwrite the existing habit name if a new name is provided.
+        Console.Write($"New name (press Enter to keep \"{habits[selection].Name}\"): ");
+        string newName = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newName))
+        {
+            habits[selection].Name = newName.Trim();
+        }
+
+        habits[selection].IsCompleted = !habits[selection].IsCompleted;
+        string newState = habits[selection].IsCompleted ? "completed" : "pending";
+        Console.WriteLine($"Updated: {habits[selection].Name} — now {newState}");
     }
 
-    // TODO 6: Implement SaveHabits
-    // Writes the habit list back to the CSV file.
-    //
-    // Requirements:
-    // - Build a string array — one CSV line per habit:
-    //     Each element: "{habit.Name},{status},{habit.Frequency}"
-    //     Hint: habits.Select(h => $"{h.Name},{(h.IsCompleted ? "done" : "pending")},{h.Frequency}").ToArray()
-    // - Call File.WriteAllLines(path, lines) to overwrite the file
-    // - Print: Habits saved to {path}.
+    /// <summary>
+    /// Saves the provided habits to a file at the given path.
+    /// </summary>
+    /// <param name="path">The path at which to save the habits.</param>
+    /// <param name="habits">The list of habits to save to the file.</param>
     private static void SaveHabits(string path, List<Habit> habits)
     {
-        throw new NotImplementedException();
+        string[] lines = habits.Select(h => $"{h.Name},{(h.IsCompleted ? "done" : "pending")},{h.Frequency}").ToArray();
+        File.WriteAllLines(path, lines);
+        Console.WriteLine($"Habits saved to {path}.");
     }
 
     /// <summary>
