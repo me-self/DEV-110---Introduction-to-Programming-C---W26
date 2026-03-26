@@ -18,11 +18,11 @@ public static class App
             {
                 case 0:
                     Console.Clear();
-                    ModifyMeasurements();
+                    ModifyMeasurements(currentUser);
                     break;
                 case 1:
                     Console.Clear();
-                    DisplayRatios();
+                    DisplayRatios(currentUser);
                     break;
                 case 2:
                     Console.Clear();
@@ -79,55 +79,39 @@ public static class App
         return user;
     }
 
-    private static void ModifyMeasurements()
+    private static void ModifyMeasurements(User user)
     {
-        float[] measurements = new float[5];
+        double height;
+        double weight;
+        double wingspan;
+        double waist;
+        double hip;
 
-        while (true)
+        string userDataFilePath = $"{user.ID}.txt";
+        if (File.Exists(userDataFilePath))
         {
-            Tui.WriteBold("Editing Measurements\n");
-            int menuTop = Console.CursorTop;
-            MenuEntry[] options = [
-                "Height: ",
-                "Weight: ",
-                "Wingspan: ",
-                "Waist Circumference: ",
-                "Hip Circumference: ",
-                ("<- Back", ConsoleColor.DarkGray)
-                ];
-            (int X, int Y) menuBottom = Console.GetCursorPosition();
-
-            // Don't give the exit option an input field.
-            ScrollTextEdit[] inputFields = new ScrollTextEdit[options.Length - 1];
-            for (int i = 0; i < inputFields.Length; i++)
+            string[] lines = File.ReadAllLines(userDataFilePath);
+            if (lines.Length >= 5)
             {
-                Console.SetCursorPosition(24, menuTop + i);
-                inputFields[i] = new ScrollTextEdit(10, "Temp");
-                inputFields[i].Display();
+                height = double.Parse(lines[0]);
+                weight = double.Parse(lines[1]);
+                wingspan = double.Parse(lines[2]);
+                waist = double.Parse(lines[3]);
+                hip = double.Parse(lines[4]);
             }
-            Console.SetCursorPosition(menuBottom.X, menuBottom.Y);
-
-            int selection = Tui.OptionsMenu(options);
-
-            if (selection == options.Length - 1)
-            {
-                break;
-            }
-
-            inputFields[selection].Focus();
-            Console.Clear();
         }
+        MeasurementsMenu.Show();
     }
 
-    private static void DisplayRatios()
+    private static void DisplayRatios(User user)
     {
         Tui.WriteBold("Your Ratios\n");
         int selection = Tui.OptionsMenu([
             $"BMI: {Ratios.GetBmi(176, 69) ?? '*'}",
-            $"BRI: {Ratios.GetBri(176, 32) ?? '*'}",
-            $"WHR: Not Set",
-            $"WHtR: Not Set",
-            $"Ape Index: Not Set",
+            $"BRI: {Ratios.GetBri(69, 32) ?? '*'}",
+            $"WHR: {Ratios.GetWhr(32, 41) ?? '*'}",
+            $"WHtR: {Ratios.GetWhtr(69, 32) ?? '*'}",
+            $"Ape Index: {Ratios.GetApeIndex(null, null) ?? '*'}",
             ("<- Back", ConsoleColor.DarkGray)
             ]);
     }
