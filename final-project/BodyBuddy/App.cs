@@ -79,23 +79,6 @@ public static class App
         return user;
     }
 
-    private static float DynamicEntry(int menuTop, int entryIndent, int entryIndex)
-    {
-        bool isValid;
-        float result;
-        do
-        {
-            // Adding two spaces to account for the selection marker.
-            Console.SetCursorPosition(2 + entryIndent, menuTop + entryIndex);
-            Console.BackgroundColor = ConsoleColor.DarkGray;
-            string input = Console.ReadLine() ?? string.Empty;
-            Console.ResetColor();
-            isValid = float.TryParse(input, out result);
-        }
-        while (!isValid);
-        return result;
-    }
-
     private static void ModifyMeasurements()
     {
         float[] measurements = new float[5];
@@ -104,7 +87,7 @@ public static class App
         {
             Tui.WriteBold("Editing Measurements\n");
             int menuTop = Console.CursorTop;
-            MenuEntry[] optionsNoValues = [
+            MenuEntry[] options = [
                 "Height: ",
                 "Weight: ",
                 "Wingspan: ",
@@ -112,19 +95,26 @@ public static class App
                 "Hip Circumference: ",
                 ("<- Back", ConsoleColor.DarkGray)
                 ];
+            (int X, int Y) menuBottom = Console.GetCursorPosition();
 
-            // TODO: Create scrollable input boxes lined up with the menu entries.
-            //ScrollEntry scrollEntry = new ScrollEntry(5, "Very Long Text");
-            //scrollEntry.Focus();
+            // Don't give the exit option an input field.
+            ScrollTextEdit[] inputFields = new ScrollTextEdit[options.Length - 1];
+            for (int i = 0; i < inputFields.Length; i++)
+            {
+                Console.SetCursorPosition(24, menuTop + i);
+                inputFields[i] = new ScrollTextEdit(10, "Temp");
+                inputFields[i].Display();
+            }
+            Console.SetCursorPosition(menuBottom.X, menuBottom.Y);
 
-            int selection = Tui.OptionsMenu(optionsNoValues);
+            int selection = Tui.OptionsMenu(options);
 
-            if (selection == optionsNoValues.Length - 1)
+            if (selection == options.Length - 1)
             {
                 break;
             }
 
-            measurements[selection] = DynamicEntry(menuTop, optionsNoValues[selection].Text.Length, selection);
+            inputFields[selection].Focus();
             Console.Clear();
         }
     }
