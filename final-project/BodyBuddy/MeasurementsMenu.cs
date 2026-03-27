@@ -18,6 +18,15 @@ public static class MeasurementsMenu
         ];
         var inputFields = new ScrollTextEdit[options.Length - 1];
 
+        // Don't give the exit option an input field.
+        for (int i = 0; i < inputFields.Length; i++)
+        {
+            Console.SetCursorPosition(28, menuTop + i);
+            string text = measurements[i]?.ToString() ?? string.Empty;
+            inputFields[i] = new ScrollTextEdit(10, "Unset", text);
+            inputFields[i].Display();
+        }
+
         int selection = 0;
         while (true)
         {
@@ -25,13 +34,9 @@ public static class MeasurementsMenu
 
             selection = Tui.OptionsMenu(options, selection, () =>
             {
-                // Don't give the exit option an input field.
-                for (int i = 0; i < inputFields.Length; i++)
+                foreach (ScrollTextEdit fields in inputFields)
                 {
-                    Console.SetCursorPosition(28, menuTop + i);
-                    string text = measurements[i]?.ToString() ?? string.Empty;
-                    inputFields[i] = new ScrollTextEdit(10, "Unset", text);
-                    inputFields[i].Display();
+                    fields.Display();
                 }
             });
 
