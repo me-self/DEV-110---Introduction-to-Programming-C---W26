@@ -13,13 +13,18 @@ public static class App
         int selection = 0;
         while (running)
         {
-            Tui.WriteBold($"Current User: {currentUser.Name}\n");
+            Console.WriteLine();
             selection = Tui.OptionsMenu(
                 ["Edit/Add a Measurement",
                 "Display Ratios",
                 "Switch User",
                 ("<- Exit", ConsoleColor.DarkGray)],
-                selection);
+                selection,
+                () =>
+                {
+                    Console.SetCursorPosition(0, 0);
+                    Tui.WriteBold($"Current User: {currentUser.Name}\n");
+                });
             switch (selection)
             {
                 case 0:
@@ -107,7 +112,6 @@ public static class App
             File.WriteAllLines(usersFilePath, users.Select(u => u.AsFileEntry()).ToArray());
         });
         Console.Clear();
-        Console.WriteLine($"Welcome {user.Name}!");
         return user;
     }
 
@@ -151,6 +155,23 @@ public static class App
         return ratio.HasValue ? ratio.Value.ToString("F2") : fallback;
     }
 
+    private static void WriteEntry(string label, double? ratio,  string fallback, string description = "")
+    {
+        string displayRatio = FormatRatio(ratio, fallback);
+
+        Display.Write($"{label}: ");
+
+        if (!ratio.HasValue)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+        }
+
+        Display.WriteLine(displayRatio);
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Display.WriteLine(description);
+        Console.ResetColor();
+    }
+
     private static void DisplayRatios(User user)
     {
         UserData userData = GetUserData(user);
@@ -162,13 +183,20 @@ public static class App
         double? apeIndex = Ratios.GetApeIndex(userData.Height, userData.Wingspan);
 
         Tui.WriteBold("Your Ratios\n");
-        Tui.OptionsMenu([
-            $"BMI: {FormatRatio(bmi, "requires height and weight")}",
-            $"BRI: {FormatRatio(bri, "requires height and waist")}",
-            $"WHR: {FormatRatio(whr, "requires waist and hip")}",
-            $"WHtR: {FormatRatio(whtr, "requires height and waist")}",
-            $"Ape Index: {FormatRatio(apeIndex, "requires height and wingspan")}",
-            ("<- Back", ConsoleColor.DarkGray)
-            ]);
+        WriteEntry("BMI", bmi, "requires height and weight", "body mass index");
+        WriteEntry("BRI", bri, "requires height and waist", "body roundness index");
+        WriteEntry("WHR", whr, "requires waist and hip", "waist to hip ratio");
+        WriteEntry("WHtR", whtr, "requires waist and height", "waist to height ratio");
+        WriteEntry("Ape Index", apeIndex, "requires height and wingspan", "ratio of armspan to height");
+
+        // A fake menu entry to indicate that pressing enter goes back.
+        Console.Write("* ");
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Display.WriteLine("<- Back");
+        Console.ResetColor();
+
+        Console.CursorVisible = false;
+        Console.ReadLine();
+        Console.CursorVisible = true;
     }
 }

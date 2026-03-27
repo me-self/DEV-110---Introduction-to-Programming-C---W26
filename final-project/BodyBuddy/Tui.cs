@@ -14,26 +14,33 @@ public static class Tui
         };
     }
 
-    public static int OptionsMenu(MenuEntry[] options, int selection = 0)
+    public static int OptionsMenu(MenuEntry[] options, int selection = 0, Action? redraw = null)
     {
         Console.CursorVisible = false;
-        selection = int.Min(selection, options.Length);
+        int menuTop = Console.CursorTop;
+        selection = int.Min(selection, options.Length - 1);
         while (true)
         {
+            // Allow the caller to also redraw.
+            redraw?.Invoke();
+
+            // Begin drawing the menu.
+            Console.SetCursorPosition(0, menuTop);
             for (int i = 0; i < options.Length; i++)
             {
+                if (Console.CursorTop == Console.BufferHeight - 1)
+                {
+                    break;
+                }
+
                 // Add an asterisk to the selected entry.
                 char selectionMarker = (i == selection) ? '*' : ' ';
-                Console.Write($"{selectionMarker} ");
+                Display.Write($"{selectionMarker} ");
                 Console.ForegroundColor = options[i].ForegroundColor ?? Console.ForegroundColor;
                 Console.BackgroundColor = options[i].BackgroundColor ?? Console.BackgroundColor;
-                Console.WriteLine(options[i].Text);
+                Display.WriteLine(options[i].Text);
                 Console.ResetColor();
             }
-
-            // Clear out the char the user typed.
-            Console.Write(' ');
-            Console.SetCursorPosition(0, Console.CursorTop);
 
             // Exit if the user has confirmed a selection.
             ConsoleKeyInfo input = Console.ReadKey();
@@ -41,6 +48,8 @@ public static class Tui
             {
                 break;
             }
+
+            Display.ClearRows(menuTop, Console.CursorTop - 1);
 
             // Allow arrow keys to move between options.
             if (input.Key == ConsoleKey.UpArrow || input.Key == ConsoleKey.LeftArrow)
@@ -58,7 +67,8 @@ public static class Tui
                 }
             }
 
-            Console.SetCursorPosition(0, Console.CursorTop - options.Length);
+            // Snap the selection into the visible menu.
+            selection = int.Min(selection, Console.BufferHeight - 2 - menuTop);
         }
 
         Console.CursorVisible = true;
@@ -88,8 +98,8 @@ public static class Tui
 
     public static void WriteBold(string text)
     {
-        const string boldCode = "\x1b[1m";
-        const string resetCode = "\x1b[0m";
-        Console.Write($"{boldCode}{text}{resetCode}");
+        const string boldCode = "\e[1m";
+        const string resetCode = "\e[0m";
+        Display.Write($"{boldCode}{text}{resetCode}");
     }
 }

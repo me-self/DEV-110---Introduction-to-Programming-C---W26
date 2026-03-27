@@ -25,8 +25,6 @@ public static class UserMenu
         int selection = 0;
         while (true)
         {
-            Tui.WriteBold("Select a User:\n");
-
             MenuEntry[] userManagementOptions = [
                 ("+ Add a New User", ConsoleColor.DarkGreen),
                 ("/ Rename Users", ConsoleColor.DarkYellow),
@@ -36,7 +34,16 @@ public static class UserMenu
             IEnumerable<MenuEntry> userMenuOptions = users.Select(user => new MenuEntry(user.Name));
             userMenuOptions = userMenuOptions.Concat(userManagementOptions);
 
-            selection = Tui.OptionsMenu(userMenuOptions.ToArray(), selection);
+            Console.WriteLine();
+            selection = Tui.OptionsMenu(
+                userMenuOptions.ToArray(),
+                selection,
+                () =>
+                {
+                    Console.SetCursorPosition(0, 0);
+                    Console.Clear();
+                    Tui.WriteBold("Select a User:\n");
+                });
 
             // These options all come after the user options.
             int addUserIndex = userMenuOptions.Count() - 4;
