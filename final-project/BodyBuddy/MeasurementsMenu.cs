@@ -27,11 +27,12 @@ public static class MeasurementsMenu
             inputFields[i].Display();
         }
 
+        int selection = 0;
         while (true)
         {
             Console.SetCursorPosition(0, menuTop);
 
-            int selection = Tui.OptionsMenu(options);
+            selection = Tui.OptionsMenu(options, selection);
 
             if (selection == options.Length - 1)
             {

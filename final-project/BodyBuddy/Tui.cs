@@ -14,10 +14,10 @@ public static class Tui
         };
     }
 
-    public static int OptionsMenu(MenuEntry[] options)
+    public static int OptionsMenu(MenuEntry[] options, int selection = 0)
     {
         Console.CursorVisible = false;
-        int selection = 0;
+        selection = int.Min(selection, options.Length);
         while (true)
         {
             for (int i = 0; i < options.Length; i++)

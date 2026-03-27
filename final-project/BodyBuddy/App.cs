@@ -111,21 +111,25 @@ public static class App
 
     private static UserData GetUserData(User user)
     {
-        UserData userData = new UserData();
+        var userData = new UserData();
 
         string userDataFilePath = $"{user.ID}.txt";
-        if (File.Exists(userDataFilePath))
+        if (!File.Exists(userDataFilePath))
         {
-            string[] lines = File.ReadAllLines(userDataFilePath);
-            if (lines.Length >= 5)
-            {
-                userData.Height = double.TryParse(lines[0], out double height) ? height : null;
-                userData.Weight = double.TryParse(lines[1], out double weight) ? weight : null;
-                userData.Wingspan = double.TryParse(lines[2], out double wingspan) ? wingspan : null;
-                userData.Waist = double.TryParse(lines[3], out double waist) ? waist : null;
-                userData.Hip = double.TryParse(lines[4], out double hip) ? hip : null;
-            }
+            return userData;
         }
+
+        string[] lines = File.ReadAllLines(userDataFilePath);
+        if (lines.Length < 5)
+        {
+            return userData;
+        }
+
+        userData.Height = double.TryParse(lines[0], out double height) ? height : null;
+        userData.Weight = double.TryParse(lines[1], out double weight) ? weight : null;
+        userData.Wingspan = double.TryParse(lines[2], out double wingspan) ? wingspan : null;
+        userData.Waist = double.TryParse(lines[3], out double waist) ? waist : null;
+        userData.Hip = double.TryParse(lines[4], out double hip) ? hip : null;
 
         return userData;
     }

@@ -22,6 +22,7 @@ public static class UserMenu
     /// <returns></returns>
     public static User Show(ref List<User> users, PostSelectFunc? postSelectUpdate = null)
     {
+        int selection = 0;
         while (true)
         {
             Tui.WriteBold("Select a User:\n");
@@ -35,7 +36,7 @@ public static class UserMenu
             IEnumerable<MenuEntry> userMenuOptions = users.Select(user => new MenuEntry(user.Name));
             userMenuOptions = userMenuOptions.Concat(userManagementOptions);
 
-            int selection = Tui.OptionsMenu(userMenuOptions.ToArray());
+            selection = Tui.OptionsMenu(userMenuOptions.ToArray(), selection);
 
             // These options all come after the user options.
             int addUserIndex = userMenuOptions.Count() - 4;
@@ -92,13 +93,14 @@ public static class UserMenu
 
     private static void RenameUser(ref List<User> users, PostSelectFunc? postSelectUpdate = null)
     {
+        int selection = 0;
         while (true)
         {
             Console.Clear();
             Tui.WriteBold("Renaming Users\n");
             MenuEntry[] options = users.Select(user => { return new MenuEntry(user.Name, ConsoleColor.Yellow); }).ToArray();
             options = options.Append(("<- Go Back", ConsoleColor.DarkGray)).ToArray();
-            int selection = Tui.OptionsMenu(options);
+            selection = Tui.OptionsMenu(options, selection);
 
             // User wants to go back.
             if (selection == users.Count)
@@ -121,13 +123,14 @@ public static class UserMenu
 
     private static void RemoveUser(ref List<User> users, PostSelectFunc? postSelectUpdate = null)
     {
+        int selection = 0;
         while (true)
         {
             Console.Clear();
             Tui.WriteBold("Removing Users\n");
             MenuEntry[] options = users.Select(user => { return new MenuEntry(user.Name, ConsoleColor.Red); }).ToArray();
             options = options.Append(("<- Go Back", ConsoleColor.DarkGray)).ToArray();
-            int selection = Tui.OptionsMenu(options);
+            selection = Tui.OptionsMenu(options, selection);
 
             // User wants to go back.
             if (selection == users.Count)
