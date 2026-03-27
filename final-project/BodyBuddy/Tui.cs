@@ -88,8 +88,8 @@ public static class Tui
 
     public static void WriteBold(string text)
     {
-        const string BOLD_CODE = "\x1b[1m";
-        const string RESET_CODE = "\x1b[0m";
-        Console.Write($"{BOLD_CODE}{text}{RESET_CODE}");
+        const string boldCode = "\x1b[1m";
+        const string resetCode = "\x1b[0m";
+        Console.Write($"{boldCode}{text}{resetCode}");
     }
 }

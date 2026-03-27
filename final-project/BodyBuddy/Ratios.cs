@@ -1,3 +1,5 @@
+namespace BodyBuddy;
+
 public static class Ratios
 {
     private static double? FallibleRatio(double? a, double? b, Func<double, double, double> ratioFunc)

@@ -10,14 +10,16 @@ public static class App
 
         User currentUser = SelectUser();
         bool running = true;
+        int selection = 0;
         while (running)
         {
             Tui.WriteBold($"Current User: {currentUser.Name}\n");
-            int selection = Tui.OptionsMenu([
-                "Edit/Add a Measurement",
+            selection = Tui.OptionsMenu(
+                ["Edit/Add a Measurement",
                 "Display Ratios",
                 "Switch User",
-                ("<- Exit", ConsoleColor.DarkGray)]);
+                ("<- Exit", ConsoleColor.DarkGray)],
+                selection);
             switch (selection)
             {
                 case 0:
