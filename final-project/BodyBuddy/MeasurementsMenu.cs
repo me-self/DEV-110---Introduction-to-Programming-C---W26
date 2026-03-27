@@ -24,7 +24,7 @@ public static class MeasurementsMenu
             Console.SetCursorPosition(28, menuTop + i);
             string text = measurements[i]?.ToString() ?? string.Empty;
             inputFields[i] = new ScrollTextEdit(10, "Unset", text);
-            inputFields[i].Display();
+            inputFields[i].Show();
         }
 
         int selection = 0;
@@ -36,7 +36,7 @@ public static class MeasurementsMenu
             {
                 foreach (ScrollTextEdit fields in inputFields)
                 {
-                    fields.Display();
+                    fields.Show();
                 }
             });
 
@@ -89,7 +89,7 @@ public static class MeasurementsMenu
                 }
             }
 
-            inputFields[selection].Display();
+            inputFields[selection].Show();
 
             postUpdateAction.Invoke();
         }

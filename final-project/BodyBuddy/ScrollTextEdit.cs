@@ -43,7 +43,7 @@ public class ScrollTextEdit
     /// <summary>
     /// Displays the text box.
     /// </summary>
-    public void Display()
+    public void Show()
     {
         ConsoleColor textColor = Console.ForegroundColor;
 
@@ -71,15 +71,15 @@ public class ScrollTextEdit
 
         // Draw an arrow indicating there is undrawn text to the left.
         Console.SetCursorPosition(_elementStart, _elementRow);
-        Console.Write((_viewStart > 0) ? "< " : "  ");
+        Display.Write((_viewStart > 0) ? "< " : "  ");
 
         Console.BackgroundColor = BoxColor;
         Console.ForegroundColor = textColor;
-        Console.Write(viewSlice);
+        Display.Write(viewSlice);
         Console.ResetColor();
 
         // Draw an arrow indicating there is undrawn text to the right.
-        Console.Write((viewEnd < Text.Length) ? " >" : "  ");
+        Display.Write((viewEnd < Text.Length) ? " >" : "  ");
 
         int visualCursor = _cursorLogical - _viewStart;
         Console.CursorLeft = _textStart + visualCursor;
@@ -137,7 +137,7 @@ public class ScrollTextEdit
         ConsoleKey pressedKey;
         do
         {
-            Display();
+            Show();
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             pressedKey = keyInfo.Key;
             char keyChar = keyInfo.KeyChar;
