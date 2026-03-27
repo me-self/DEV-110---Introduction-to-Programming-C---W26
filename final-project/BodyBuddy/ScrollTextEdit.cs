@@ -98,13 +98,6 @@ public class ScrollTextEdit
 
         _cursorLogical--;
 
-        // If text shrunk and is now less than the cursor.
-        if (_cursorLogical > Text.Length)
-        {
-            _cursorLogical = Text.Length;
-            _viewStart = int.Max(0, Text.Length - _viewSize);
-        }
-
         // If we're at the left of the view region, we shift that left too.
         if (_cursorLogical < _viewStart)
         {
