@@ -146,6 +146,11 @@ public static class App
         });
     }
 
+    private static string FormatRatio(double? ratio, string fallback)
+    {
+        return ratio.HasValue ? ratio.Value.ToString("F2") : fallback;
+    }
+
     private static void DisplayRatios(User user)
     {
         UserData userData = GetUserData(user);
@@ -158,11 +163,11 @@ public static class App
 
         Tui.WriteBold("Your Ratios\n");
         Tui.OptionsMenu([
-            $"BMI: {bmi?.ToString() ?? "requires height and weight"}",
-            $"BRI: {bri?.ToString() ?? "requires height and waist"}",
-            $"WHR: {whr?.ToString() ?? "requires waist and hip"}",
-            $"WHtR: {whtr?.ToString() ?? "requires height and waist"}",
-            $"Ape Index: {apeIndex?.ToString() ?? "requires height and wingspan"}",
+            $"BMI: {FormatRatio(bmi, "requires height and weight")}",
+            $"BRI: {FormatRatio(bri, "requires height and waist")}",
+            $"WHR: {FormatRatio(whr, "requires waist and hip")}",
+            $"WHtR: {FormatRatio(whtr, "requires height and waist")}",
+            $"Ape Index: {FormatRatio(apeIndex, "requires height and wingspan")}",
             ("<- Back", ConsoleColor.DarkGray)
             ]);
     }
