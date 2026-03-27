@@ -2,8 +2,12 @@ namespace BodyBuddy;
 
 public static class App
 {
+    private const string _saveDir = "body_buddy_data";
+
     public static void Run()
     {
+        PrepareEnvironment();
+
         User currentUser = SelectUser();
         bool running = true;
         while (running)
@@ -41,15 +45,41 @@ public static class App
         }
     }
 
+    /// <summary>
+    /// Creates and moves into the save directory.
+    /// </summary>
+    private static void PrepareEnvironment()
+    {
+        if (File.Exists(_saveDir))
+        {
+            Tui.WriteBold($"Could not create directory at {_saveDir}! File exists at this location.\n");
+            if (Tui.ConfirmationPrompt("Would you like to delete the file?"))
+            {
+                File.Delete(_saveDir);
+            }
+            else
+            {
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey();
+                return;
+            }
+        }
+
+        Directory.CreateDirectory(_saveDir);
+        Directory.SetCurrentDirectory(_saveDir);
+    }
+
     private static User SelectUser()
     {
+        string usersFilePath = "users.txt";
+
         List<User> users;
-        if (File.Exists("users.txt"))
+        if (File.Exists(usersFilePath))
         {
             // Collect all non-empty usernames in the proper format.
             // Each entry should look like so:
             // `uuid: my user name`
-            IEnumerable<string> userEntries = File.ReadAllLines("users.txt")
+            IEnumerable<string> userEntries = File.ReadAllLines(usersFilePath)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Where(line => line.Split(':').Length == 2);
             users = userEntries.Select(line =>
@@ -72,7 +102,7 @@ public static class App
                 File.Delete($"{user.ID}.txt");
             }
 
-            File.WriteAllLines("users.txt", users.Select(user => user.AsFileEntry()).ToArray());
+            File.WriteAllLines(usersFilePath, users.Select(user => user.AsFileEntry()).ToArray());
         });
         Console.Clear();
         Console.WriteLine($"Welcome {user.Name}!");
@@ -81,11 +111,7 @@ public static class App
 
     private static void ModifyMeasurements(User user)
     {
-        double height;
-        double weight;
-        double wingspan;
-        double waist;
-        double hip;
+        UserData userData = new UserData();
 
         string userDataFilePath = $"{user.ID}.txt";
         if (File.Exists(userDataFilePath))
@@ -93,25 +119,42 @@ public static class App
             string[] lines = File.ReadAllLines(userDataFilePath);
             if (lines.Length >= 5)
             {
-                height = double.Parse(lines[0]);
-                weight = double.Parse(lines[1]);
-                wingspan = double.Parse(lines[2]);
-                waist = double.Parse(lines[3]);
-                hip = double.Parse(lines[4]);
+                userData.Height = double.Parse(lines[0]);
+                userData.Weight = double.Parse(lines[1]);
+                userData.Wingspan = double.Parse(lines[2]);
+                userData.Waist = double.Parse(lines[3]);
+                userData.Hip = double.Parse(lines[4]);
             }
         }
-        MeasurementsMenu.Show();
+
+        MeasurementsMenu.Show(ref userData, () =>
+        {
+            File.WriteAllLines(userDataFilePath, userData.AsLines());
+        });
+    }
+
+    private static void PrintRatio(string label, double? ratio)
+    {
+        Console.Write($"{label}: ");
+        if (ratio.HasValue)
+        {
+            Console.WriteLine(ratio.Value);
+        }
+        else
+        {
+            Console.WriteLine("");
+        }
     }
 
     private static void DisplayRatios(User user)
     {
         Tui.WriteBold("Your Ratios\n");
         int selection = Tui.OptionsMenu([
-            $"BMI: {Ratios.GetBmi(176, 69) ?? '*'}",
-            $"BRI: {Ratios.GetBri(69, 32) ?? '*'}",
-            $"WHR: {Ratios.GetWhr(32, 41) ?? '*'}",
-            $"WHtR: {Ratios.GetWhtr(69, 32) ?? '*'}",
-            $"Ape Index: {Ratios.GetApeIndex(null, null) ?? '*'}",
+            $"BMI: {Ratios.GetBmi(176, 69)}",
+            $"BRI: {Ratios.GetBri(69, 32)?.ToString() ?? "..."}",
+            $"WHR: {Ratios.GetWhr(32, 41)?.ToString() ?? "..."}",
+            $"WHtR: {Ratios.GetWhtr(69, 32)?.ToString() ?? "..."}",
+            $"Ape Index: {Ratios.GetApeIndex(null, null)?.ToString() ?? "..."}",
             ("<- Back", ConsoleColor.DarkGray)
             ]);
     }

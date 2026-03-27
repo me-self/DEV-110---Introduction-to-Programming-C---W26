@@ -94,7 +94,7 @@ public class ScrollTextEdit
         _cursorLogical++;
     }
 
-    public void Focus()
+    public void Focus(Action<ScrollTextEdit>? update = null)
     {
         ConsoleKey pressedKey;
         do
@@ -140,8 +140,11 @@ public class ScrollTextEdit
                     {
                         ShiftRight();
                     }
+
                     break;
             }
+
+            update?.Invoke(this);
         }
         while (pressedKey != ConsoleKey.Enter);
     }

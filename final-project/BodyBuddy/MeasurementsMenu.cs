@@ -2,9 +2,9 @@ namespace BodyBuddy;
 
 public static class MeasurementsMenu
 {
-    public static void Show()
+    public static void Show(ref UserData userData, Action postUpdateAction)
     {
-        float?[] measurements = new float?[5];
+        double?[] measurements = [userData.Height, userData.Weight, userData.Wingspan, userData.Waist, userData.Hip];
 
         Tui.WriteBold("Editing Measurements\n");
         int menuTop = Console.CursorTop;
@@ -38,7 +38,48 @@ public static class MeasurementsMenu
                 break;
             }
 
-            inputFields[selection].Focus();
+            double value = -1;
+            bool isValid = false;
+            inputFields[selection].Focus(field =>
+            {
+                isValid = double.TryParse(field.Text, out value);
+
+                // If it's invalid and not just empty, highlight the cell red.
+                if (!isValid && !field.Text.IsWhiteSpace())
+                {
+                    inputFields[selection].BoxColor = ConsoleColor.DarkRed;
+                }
+                else
+                {
+                    inputFields[selection].BoxColor = ConsoleColor.DarkGray;
+                }
+            });
+
+            if (isValid)
+            {
+                inputFields[selection].BoxColor = ConsoleColor.DarkGray;
+                switch (selection)
+                {
+                    case 0:
+                        userData.Height = value;
+                        break;
+                    case 1:
+                        userData.Weight = value;
+                        break;
+                    case 2:
+                        userData.Wingspan = value;
+                        break;
+                    case 3:
+                        userData.Waist = value;
+                        break;
+                    case 4:
+                        userData.Hip = value;
+                        break;
+                }
+            }
+            inputFields[selection].Display();
+
+            postUpdateAction.Invoke();
         }
     }
 }
