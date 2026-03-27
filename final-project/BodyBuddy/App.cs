@@ -109,7 +109,7 @@ public static class App
         return user;
     }
 
-    private static void ModifyMeasurements(User user)
+    private static UserData GetUserData(User user)
     {
         UserData userData = new UserData();
 
@@ -119,42 +119,44 @@ public static class App
             string[] lines = File.ReadAllLines(userDataFilePath);
             if (lines.Length >= 5)
             {
-                userData.Height = double.Parse(lines[0]);
-                userData.Weight = double.Parse(lines[1]);
-                userData.Wingspan = double.Parse(lines[2]);
-                userData.Waist = double.Parse(lines[3]);
-                userData.Hip = double.Parse(lines[4]);
+                userData.Height = double.TryParse(lines[0], out double height) ? height : null;
+                userData.Weight = double.TryParse(lines[1], out double weight) ? weight : null;
+                userData.Wingspan = double.TryParse(lines[2], out double wingspan) ? wingspan : null;
+                userData.Waist = double.TryParse(lines[3], out double waist) ? waist : null;
+                userData.Hip = double.TryParse(lines[4], out double hip) ? hip : null;
             }
         }
 
-        MeasurementsMenu.Show(ref userData, () =>
-        {
-            File.WriteAllLines(userDataFilePath, userData.AsLines());
-        });
+        return userData;
     }
 
-    private static void PrintRatio(string label, double? ratio)
+    private static void ModifyMeasurements(User user)
     {
-        Console.Write($"{label}: ");
-        if (ratio.HasValue)
+        UserData userData = GetUserData(user);
+
+        MeasurementsMenu.Show(ref userData, () =>
         {
-            Console.WriteLine(ratio.Value);
-        }
-        else
-        {
-            Console.WriteLine("");
-        }
+            File.WriteAllLines($"{user.ID}.txt", userData.AsLines());
+        });
     }
 
     private static void DisplayRatios(User user)
     {
+        UserData userData = GetUserData(user);
+
+        double? bmi = Ratios.GetBmi(userData.Weight, userData.Height);
+        double? bri = Ratios.GetBri(userData.Height, userData.Waist);
+        double? whr = Ratios.GetWhr(userData.Waist, userData.Hip);
+        double? whtr = Ratios.GetWhtr(userData.Height, userData.Waist);
+        double? apeIndex = Ratios.GetApeIndex(userData.Height, userData.Wingspan);
+
         Tui.WriteBold("Your Ratios\n");
-        int selection = Tui.OptionsMenu([
-            $"BMI: {Ratios.GetBmi(176, 69)}",
-            $"BRI: {Ratios.GetBri(69, 32)?.ToString() ?? "..."}",
-            $"WHR: {Ratios.GetWhr(32, 41)?.ToString() ?? "..."}",
-            $"WHtR: {Ratios.GetWhtr(69, 32)?.ToString() ?? "..."}",
-            $"Ape Index: {Ratios.GetApeIndex(null, null)?.ToString() ?? "..."}",
+        Tui.OptionsMenu([
+            $"BMI: {bmi?.ToString() ?? "requires height and weight"}",
+            $"BRI: {bri?.ToString() ?? "requires height and waist"}",
+            $"WHR: {whr?.ToString() ?? "requires waist and hip"}",
+            $"WHtR: {whtr?.ToString() ?? "requires height and waist"}",
+            $"Ape Index: {apeIndex?.ToString() ?? "requires height and wingspan"}",
             ("<- Back", ConsoleColor.DarkGray)
             ]);
     }

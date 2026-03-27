@@ -38,11 +38,11 @@ public static class MeasurementsMenu
                 break;
             }
 
-            double value = -1;
+            double? maybeValue = null;
             bool isValid = false;
             inputFields[selection].Focus(field =>
             {
-                isValid = double.TryParse(field.Text, out value);
+                isValid = double.TryParse(field.Text, out double value);
 
                 // If it's invalid and not just empty, highlight the cell red.
                 if (!isValid && !field.Text.IsWhiteSpace())
@@ -52,28 +52,29 @@ public static class MeasurementsMenu
                 else
                 {
                     inputFields[selection].BoxColor = ConsoleColor.DarkGray;
+                    maybeValue = isValid ? value : null;
                 }
             });
 
-            if (isValid)
+            if (isValid || inputFields[selection].Text.IsWhiteSpace())
             {
                 inputFields[selection].BoxColor = ConsoleColor.DarkGray;
                 switch (selection)
                 {
                     case 0:
-                        userData.Height = value;
+                        userData.Height = maybeValue;
                         break;
                     case 1:
-                        userData.Weight = value;
+                        userData.Weight = maybeValue;
                         break;
                     case 2:
-                        userData.Wingspan = value;
+                        userData.Wingspan = maybeValue;
                         break;
                     case 3:
-                        userData.Waist = value;
+                        userData.Waist = maybeValue;
                         break;
                     case 4:
-                        userData.Hip = value;
+                        userData.Hip = maybeValue;
                         break;
                 }
             }
