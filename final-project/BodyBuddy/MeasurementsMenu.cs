@@ -18,7 +18,7 @@ public static class MeasurementsMenu
         ];
 
         // Don't give the exit option an input field.
-        ScrollTextEdit[] inputFields = new ScrollTextEdit[options.Length - 1];
+        var inputFields = new ScrollTextEdit[options.Length - 1];
         for (int i = 0; i < inputFields.Length; i++)
         {
             Console.SetCursorPosition(28, menuTop + i);
@@ -43,6 +43,9 @@ public static class MeasurementsMenu
             inputFields[selection].Focus(field =>
             {
                 isValid = double.TryParse(field.Text, out double value);
+
+                // Only accept values over 0.
+                isValid = isValid && value > 0;
 
                 // If it's invalid and not just empty, highlight the cell red.
                 if (!isValid && !field.Text.IsWhiteSpace())
@@ -78,6 +81,7 @@ public static class MeasurementsMenu
                         break;
                 }
             }
+
             inputFields[selection].Display();
 
             postUpdateAction.Invoke();

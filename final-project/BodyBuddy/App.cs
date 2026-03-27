@@ -71,14 +71,14 @@ public static class App
 
     private static User SelectUser()
     {
-        string usersFilePath = "users.txt";
+        const string usersFilePath = "users.txt";
 
         List<User> users;
         if (File.Exists(usersFilePath))
         {
             // Collect all non-empty usernames in the proper format.
             // Each entry should look like so:
-            // `uuid: my user name`
+            // `uuid: my username`
             IEnumerable<string> userEntries = File.ReadAllLines(usersFilePath)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Where(line => line.Split(':').Length == 2);
@@ -102,7 +102,7 @@ public static class App
                 File.Delete($"{user.ID}.txt");
             }
 
-            File.WriteAllLines(usersFilePath, users.Select(user => user.AsFileEntry()).ToArray());
+            File.WriteAllLines(usersFilePath, users.Select(u => u.AsFileEntry()).ToArray());
         });
         Console.Clear();
         Console.WriteLine($"Welcome {user.Name}!");

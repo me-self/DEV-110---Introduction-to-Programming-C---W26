@@ -1,19 +1,48 @@
 namespace BodyBuddy;
 
+/// <summary>
+/// An editable text box that can be scrolled left and right using the arrow
+/// keys.
+/// </summary>
 public class ScrollTextEdit
 {
+    private readonly int _elementRow;
+    private readonly int _elementStart;
+    private readonly int _textStart;
+    private readonly int _viewSize;
+    private readonly string _placeholder;
+    private int _viewStart;
+    private int _cursorLogical;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScrollTextEdit"/> class.
+    /// It will continue to be drawn at the location of the cursor at creation.
+    /// </summary>
+    /// <param name="viewSize">
+    /// The character width of the text box view. This does *not* include the space taken by arrows.
+    /// </param>
+    /// <param name="placeholder">Placeholder text that will be shown if there is no text in this box.</param>
+    /// <param name="text">The editable text in this box.</param>
     public ScrollTextEdit(int viewSize, string placeholder, string text)
     {
         _elementRow = Console.CursorTop;
         _elementStart = Console.CursorLeft;
-        // Adding 2 since that's the space for the arrows.
-        _textStart = _elementStart + 2;
+        _cursorLogical = text.Length;
         _viewSize = viewSize;
         _placeholder = placeholder;
         Text = text;
-        _cursorLogical = text.Length;
+
+        // Adding 2 since that's the space needed for the arrow on the left.
+        _textStart = _elementStart + 2;
     }
 
+    public string Text { get; set; }
+
+    public ConsoleColor BoxColor { get; set; } = ConsoleColor.DarkGray;
+
+    /// <summary>
+    /// Displays the text box.
+    /// </summary>
     public void Display()
     {
         ConsoleColor textColor = Console.ForegroundColor;
@@ -28,6 +57,7 @@ public class ScrollTextEdit
             viewSlice = _placeholder.PadRight(_viewSize);
             textColor = ConsoleColor.Gray;
         }
+
         int viewEnd = _viewStart + _viewSize;
 
         // If the text has shrunken, we move the view accordingly.
@@ -55,7 +85,10 @@ public class ScrollTextEdit
         Console.CursorLeft = _textStart + visualCursor;
     }
 
-    public void ShiftLeft()
+    /// <summary>
+    /// Shifts the cursor (and potentially the view if the cursor exits it) left.
+    /// </summary>
+    private void ShiftLeft()
     {
         // Return immediately if we can't move further left.
         if (_cursorLogical == 0)
@@ -79,7 +112,10 @@ public class ScrollTextEdit
         }
     }
 
-    public void ShiftRight()
+    /// <summary>
+    /// Shifts the cursor (and potentially the view if the cursor exits it) right.
+    /// </summary>
+    private void ShiftRight()
     {
         // Return immediately if we can't move further right.
         if (_cursorLogical == Text.Length)
@@ -91,9 +127,18 @@ public class ScrollTextEdit
         {
             _viewStart++;
         }
+
         _cursorLogical++;
     }
 
+    /// <summary>
+    /// Grabs focus to this ScrollTextEdit until enter is pressed.
+    /// The cursor can be moved left and right using arrow keys. Backspace and delete work as expected.
+    /// </summary>
+    /// <param name="update">
+    /// This is called after each key press.
+    /// It may be used to provide instantaneous feedback to the user.
+    /// </param>
     public void Focus(Action<ScrollTextEdit>? update = null)
     {
         ConsoleKey pressedKey;
@@ -103,6 +148,7 @@ public class ScrollTextEdit
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             pressedKey = keyInfo.Key;
             char keyChar = keyInfo.KeyChar;
+
             // If the char isn't a control char, we insert it at the cursor.
             if (!char.IsControl(keyChar))
             {
@@ -119,21 +165,27 @@ public class ScrollTextEdit
                         Text = Text.Remove(_cursorLogical - 1, 1);
                         ShiftLeft();
                     }
+
                     break;
+
                 // Remove the character at the cursor.
                 case ConsoleKey.Delete:
                     if (Text.Length > _cursorLogical)
                     {
                         Text = Text.Remove(_cursorLogical, 1);
                     }
+
                     break;
+
                 // Shift the cursor (and maybe view) left.
                 case ConsoleKey.LeftArrow:
                     if (_cursorLogical > 0)
                     {
                         ShiftLeft();
                     }
+
                     break;
+
                 // Shift the cursor (and maybe view) right.
                 case ConsoleKey.RightArrow:
                     if (_cursorLogical < Text.Length)
@@ -148,14 +200,4 @@ public class ScrollTextEdit
         }
         while (pressedKey != ConsoleKey.Enter);
     }
-
-    private readonly int _elementRow = 0;
-    private readonly int _elementStart = 0;
-    private readonly int _textStart = 0;
-    private readonly int _viewSize;
-    private readonly string _placeholder;
-    private int _viewStart = 0;
-    private int _cursorLogical = 0;
-    public string Text { get; set; }
-    public ConsoleColor BoxColor { get; set; } = ConsoleColor.DarkGray;
 }
