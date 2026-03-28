@@ -6,6 +6,7 @@ public static class Ratios
     {
         // Return null if missing a value, otherwise calculate and return the ratio.
         bool incomplete = !(a.HasValue && b.HasValue);
+
         // These aren't null if the condition is false.
         return incomplete ? null : ratioFunc(a!.Value, b!.Value);
     }
@@ -36,9 +37,9 @@ public static class Ratios
         return FallibleRatio(waist, height, (w, h) =>
         {
             // `h` and `w` aren't null so this is safe to cast.
-            double whtr = (double)GetWhtr(h, w);
+            double whtr = (double)GetWhtr(h, w)!;
             double eccentricity = double.Sqrt(1 - double.Pow(whtr / Math.PI, 2));
-            return 364.2f - 365.5f * eccentricity;
+            return 364.2f - (365.5f * eccentricity);
         });
     }
 }

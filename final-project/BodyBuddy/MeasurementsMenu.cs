@@ -55,7 +55,7 @@ public static class MeasurementsMenu
                 isValid = isValid && value > 0;
 
                 // If it's invalid and not just empty, highlight the cell red.
-                if (!isValid && !field.Text.IsWhiteSpace())
+                if (!isValid && !string.IsNullOrWhiteSpace(field.Text))
                 {
                     inputFields[selection].BoxColor = ConsoleColor.DarkRed;
                 }
@@ -66,7 +66,7 @@ public static class MeasurementsMenu
                 }
             });
 
-            if (isValid || inputFields[selection].Text.IsWhiteSpace())
+            if (isValid || string.IsNullOrWhiteSpace(inputFields[selection].Text))
             {
                 inputFields[selection].BoxColor = ConsoleColor.DarkGray;
                 switch (selection)

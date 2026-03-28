@@ -38,6 +38,9 @@ public static class App
                 case 2:
                     Console.Clear();
                     currentUser = SelectUser();
+
+                    // Reset the selection for a new user.
+                    selection = 0;
                     continue;
                 case 3:
                     if (Tui.ConfirmationPrompt("Are you sure you want to exit?"))
@@ -111,6 +114,7 @@ public static class App
 
             File.WriteAllLines(usersFilePath, users.Select(u => u.AsFileEntry()).ToArray());
         });
+        File.WriteAllLines(usersFilePath, users.Select(u => u.AsFileEntry()).ToArray());
         Console.Clear();
         return user;
     }
@@ -155,7 +159,7 @@ public static class App
         return ratio.HasValue ? ratio.Value.ToString("F2") : fallback;
     }
 
-    private static void WriteEntry(string label, double? ratio,  string fallback, string description = "")
+    private static void WriteEntry(string label, double? ratio, string fallback, string description = "")
     {
         string displayRatio = FormatRatio(ratio, fallback);
 
