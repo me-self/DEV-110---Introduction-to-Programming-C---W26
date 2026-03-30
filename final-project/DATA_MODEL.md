@@ -8,7 +8,7 @@ _Fill this out **before** writing any code. Think through your app's data first.
 
 _What does your app do? Who uses it and why?_
 
-[Your scenario here]
+It calculates various body measurements and ratios based on user inputs, including BMI, BRI, WHR, WHtR, and Ape Index. Above all, it should be convenient: it should *not* require that every measure is filled out right away, but should instead calculate as much as is possible with what is provided.
 
 ---
 
@@ -19,11 +19,12 @@ _List **at least 5** named inputs your app collects or works with. Include the d
 _Example format:_
 _- `movieTitle` (string) — the name of the movie the user enters_
 
-- `` () —
-- `` () —
-- `` () —
-- `` () —
-- `` () —
+- `height` (float) — the height of the user in inches
+- `weight` (float) - the weight of the user in pounds
+- `wingspan` (float) — the wingspan of the user in inches
+- `waistCircumference` (float) — the waist circumference of the user in inches
+- `hipCircumference` (float) — the hip circumference of the user in inches
+- `profileName` (string) — the name of the profile under which to store the measurements
 
 ---
 
@@ -32,7 +33,11 @@ _- `movieTitle` (string) — the name of the movie the user enters_
 _List any values your program computes from the inputs (totals, averages, counts, formatted strings, etc.)._
 _If your app doesn't calculate anything, write "None" and explain why._
 
-[Your calculated values here]
+- BMI
+- BRI
+- WHR
+- WHtR
+- Ape Index
 
 ---
 
@@ -40,7 +45,10 @@ _If your app doesn't calculate anything, write "None" and explain why._
 
 _Describe what the program displays. Include menu options, summary views, confirmation messages, etc._
 
-[Your outputs here]
+- User management menu
+- Confirmation prompts for certain actions
+- Menu for editing measurements
+- View of calculated ratios
 
 ---
 
@@ -50,4 +58,7 @@ _What could go wrong or behave unexpectedly? How will your app handle it?_
 
 _Examples: file not found, user enters a letter instead of a number, empty list, duplicate entry._
 
-[Your edge case here]
+- Conflicting user names
+- Save directory not found
+- Save file(s) not found
+- User enters not float values for measurements
