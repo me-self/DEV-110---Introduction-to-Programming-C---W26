@@ -16,10 +16,10 @@ This course is organized into 12 weekly modules, each building on the previous w
 | 6    | Strings + Console Output Patterns  | [Text Menu App](modules/week-06-text-menu-app/)         |
 | 7    | Arrays: Collections + Indexing     | [Class Roster Stats](modules/week-07-class-roster/)     |
 | 8    | Program Structure + Debugging      | [MadLibs Generator](modules/week-08-mad-libs/)          |
-| 9    | Methods: Decomposition + Reuse     | Methods Refactor _(Coming Soon)_                        |
-| 10   | Windows Forms: Events + UI         | First GUI App _(Coming Soon)_                           |
-| 11   | Open Lab / Final Project Work      | Work on Final Project                                   |
-| 12   | Final Project                      | TBD                                                     |
+| 9    | Methods: Decomposition + Reuse     | [Methods Refactor](modules/week-09-methods-linq/)       |
+| 10   | File I/O Basics                    | [Mini CSV Tracker](modules/week-10-file-io/)            |
+| 11   | Open Lab / Finals Work             | Work on Final Project                                   |
+| 12   | YOUR OWN APP! Final Project (EC)   | [Mini CSV Tracker](final-project/)                      |
 
 ---
 
